@@ -1,0 +1,48 @@
+---
+title: "Lab10"
+author: "Joseph Kabariti"
+date: "November 19, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+pbinom simulation
+```{r}
+pbinom_sim = function(q, size, prob){
+  p = 0
+  i = c(1:q)
+  if (q > size)
+      return(1)
+  if (q < 0)
+      return(0)
+  p = ((factorial(size)/(factorial(i)*factorial(size-i))) * (prob ** i) * ((1-prob) ** (size - i)))
+  return(sum(p))
+}
+
+pbinom_sim(2,25,0.5)
+pbinom(2,25,0.5)
+
+pbinom_sim(26,25,0.5)
+pbinom(26,25,0.5)
+```
+
+
+```{r}
+
+power.t.test.sim = function(n, delta, sd, sig.level) {
+  data = replicate(10000,{
+                    x <-rnorm(n, mean = delta, sd = sigma)
+                    tt <-as.numeric(t.test(x)$p.value<alpha)})
+  return(sum(data)/10000)
+}
+
+ptts = power.t.test.sim(n=30,delta=0.5,sd=1,sig.level=0.05)
+power.t.test(n=30,delta=0.5,sd=1,sig.level=0.05,type=c("one.sample"))$power
+print(ptts)
+
+```
+
+
